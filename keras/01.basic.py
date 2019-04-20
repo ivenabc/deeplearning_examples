@@ -19,3 +19,9 @@ x = keras.layers.Dense(32, activation='relu')(input_tensor)
 output_tensor = keras.layers.Dense(10, activation='softmax')(x)
 
 model = keras.models.Model(inputs=input_tensor, outputs=output_tensor)
+
+model.compile(optimizer=keras.optimizers.RMSprop(lr=0.001),
+    loss='mse',
+    metrics=['accuracy'])
+
+# model.fit(input_tensor, target_tensor, batch_size=128, epochs=10)
