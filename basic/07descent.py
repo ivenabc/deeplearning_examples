@@ -10,6 +10,7 @@ def gradient_descent(f, init_x, lr=0.01, step_num=100):
     return x
 
 
+# 
 def numerical_gradient(f, x):
     h = 1e-4 # 0.0001
     grad = np.zeros_like(x) # 生成和x形状相同的数组
