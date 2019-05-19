@@ -51,3 +51,7 @@ model.fit(partial_x_train, partial_y_train, epochs=20,
 
 # model.save_weights('./weights/my_model')
 
+# class MyModel(tf.keras.Model):
+#     def init(self):
+#         self.dense1 = keras.layers.Dense(16, activation=tf.nn.relu, input_shape=(10000,))
+#         self.dense2 = keras.layers.Dense(16, activation=tf.nn.relu)   
