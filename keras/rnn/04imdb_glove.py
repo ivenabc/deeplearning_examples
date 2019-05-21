@@ -3,7 +3,7 @@ import tensorflow as tf
 import numpy as np 
 
 imdb_dir = '../../data/'
-train_dir = os.path.join(imdb_dir, 'testimdb')
+train_dir = os.path.join(imdb_dir, 'prodimdb')
 glove_dir = os.path.join(imdb_dir, 'glove.6B/glove.6B.100d.txt')
 print(train_dir)
 
@@ -18,7 +18,6 @@ for label_type in ['neg', 'pos']:
             text = f.read()
             texts.append(text)
             f.close()
-            print(text)
             if label_type == 'neg':
                 labels.append(0)
             else:
@@ -38,16 +37,16 @@ tokenizer.fit_on_texts(texts)
 sequences = tokenizer.texts_to_sequences(texts)
 
 word_index = tokenizer.word_index
-print('Found %s unique tokens.' % len(word_index))
-print('Found  ', word_index.get('again'))
+# print('Found %s unique tokens.' % len(word_index))
+# print('Found  ', word_index.get('again'))
 # print('Found :', word_index)
 data = tf.keras.preprocessing.sequence.pad_sequences(sequences, maxlen=maxlen)
 
 
-new_dict = {v:k for k, v in word_index.items()}
-print('Found new dict:', new_dict[81], new_dict[42])
-print('Found data shape:',data.shape)
-print('Found data:', data[0])
+# new_dict = {v:k for k, v in word_index.items()}
+# print('Found new dict:', new_dict[81], new_dict[42])
+# print('Found data shape:',data.shape)
+# print('Found data:', data[0])
 
 
 # 打乱数组顺序
@@ -60,11 +59,10 @@ print('Found data:', data[0])
 # [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16]
 # [ 6 16 15  9 12  4 14  0  2 10  3 11 13  1  7  8  5]
 
-# x_train = data[:training_samples]
-# y_train = labels[:training_samples]
-# x_val = data[training_samples: training_samples + validation_samples]
-# y_val = labels[training_samples: training_samples + validation_samples]
-
+x_train = data[:training_samples]
+y_train = labels[:training_samples]
+x_val = data[training_samples: training_samples + validation_samples]
+y_val = labels[training_samples: training_samples + validation_samples]
 
 embeddings_index =  {}
 
@@ -78,3 +76,33 @@ for line in f:
 f.close()
 
 print('Found %s word vectors.' % len(embeddings_index))
+
+embedding_dim = 100
+embedding_matrix = np.zeros((max_words, embedding_dim))
+
+for word, i in word_index.items():
+    if i < max_words:
+        embedding_vector = embeddings_index.get(word)
+        if embedding_vector is not None:
+            embedding_matrix[i] = embedding_vector
+
+
+model = tf.keras.models.Sequential()
+model.add(tf.keras.layers.Embedding(max_words, embedding_dim,input_length=maxlen))
+model.add(tf.keras.layers.Flatten())
+model.add(tf.keras.layers.Dense(32, activation='relu'))
+model.add(tf.keras.layers.Dense(1, activation='sigmoid'))
+model.summary()
+model.layers[0].set_weights([embedding_matrix])
+model.layers[0].trainable = False
+model.compile(
+    optimizer='rmsprop',
+    loss='binary_crossentropy',
+    metrics=['acc'])
+history = model.fit(
+    x_train, 
+    y_train,
+    epochs=10,
+    batch_size=32,
+    validation_data=(x_val, y_val))
+model.save_weights('pre_trained_glove_model.h5')
