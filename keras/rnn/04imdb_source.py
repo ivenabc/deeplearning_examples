@@ -51,27 +51,30 @@ print('Found data:', data[0])
 
 
 # 打乱数组顺序
-indices = np.arange(data.shape[0])
-print(indices)
-np.random.shuffle(indices)
-print(indices)
-data = data[indices]
-labels = labels[indices]
+# indices = np.arange(data.shape[0])
+# print(indices)
+# np.random.shuffle(indices)
+# print(indices)
+# data = data[indices]
+# labels = labels[indices]
 # [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16]
 # [ 6 16 15  9 12  4 14  0  2 10  3 11 13  1  7  8  5]
 
-x_train = data[:training_samples]
-y_train = labels[:training_samples]
-x_val = data[training_samples: training_samples + validation_samples]
-y_val = labels[training_samples: training_samples + validation_samples]
+# x_train = data[:training_samples]
+# y_train = labels[:training_samples]
+# x_val = data[training_samples: training_samples + validation_samples]
+# y_val = labels[training_samples: training_samples + validation_samples]
 
 
-embeddings_index =  ()
+embeddings_index =  {}
 
-f = open(glove_dir)
+f = open(glove_dir, encoding='UTF-8')
 for line in f:
     values = line.split()
+    # print('values:', values)
     word = values[0]
     coefs = np.asarray(values[1:], dtype='float32')
     embeddings_index[word] = coefs
 f.close()
+
+print('Found %s word vectors.' % len(embeddings_index))
