@@ -1,6 +1,10 @@
 from tensorflow import keras
 
 
+(train_images, train_labels), (test_images, test_labels) = keras.datasets.mnist.load_data()
+
+print('lables[0]', train_labels[0])
+
 model = keras.models.Sequential()
 
 model.add(keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)))
@@ -14,7 +18,7 @@ model.add(keras.layers.Dense(10, activation='softmax'))
 
 # model.summary()
 
-(train_images, train_labels), (test_images, test_labels) = keras.datasets.mnist.load_data()
+
 
 
 train_images = train_images.reshape((60000, 28, 28, 1))

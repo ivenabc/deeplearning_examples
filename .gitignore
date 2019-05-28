@@ -4,9 +4,8 @@ data/
 plt.png
 __pycache__
 
-train-images-idx3-ubyte.gzs
-train-labels-idx1-ubyte.gz
-t10k-images-idx3-ubyte.gz
-t10k-labels-idx1-ubyte.gz
-train-images-idx3-ubyte.gz
+*.gz
+*.gzs
 mnist.pkl
+*.bmp
+*.png
