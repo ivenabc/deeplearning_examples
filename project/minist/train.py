@@ -41,7 +41,6 @@ ds = ds.repeat()
 ds = ds.batch(BATCH_SIZE)
 ds = ds.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
 
-# tensorboard --logdir logs/
 tbCallBack = tf.keras.callbacks.TensorBoard(log_dir='./logs',histogram_freq=0, write_graph=True, write_images=True)
 
 model = models.Sequential()
