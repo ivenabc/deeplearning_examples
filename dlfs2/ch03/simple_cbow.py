@@ -28,6 +28,7 @@ class SimpleCBOW:
 
     def forward(self, contexts, target):
         h0 = self.in_layer0.forward(contexts[:, 0])
+        print('h0', h0)
         h1 = self.in_layer1.forward(contexts[:, 1])
         h = (h0 + h1) * 0.5
         score = self.out_layer.forward(h)

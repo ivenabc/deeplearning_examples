@@ -58,6 +58,24 @@ def convert_one_hot(corpus, vocab_size):
 
 
 
+def convert_one_hot(corpus, vocab_size):
+  
+    N = corpus.shape[0]
+
+    if corpus.ndim == 1:
+        one_hot = np.zeros((N, vocab_size), dtype=np.int32)
+        for idx, word_id in enumerate(corpus):
+            one_hot[idx, word_id] = 1
+
+    elif corpus.ndim == 2:
+        C = corpus.shape[1]
+        one_hot = np.zeros((N, C, vocab_size), dtype=np.int32)
+        for idx_0, word_ids in enumerate(corpus):
+            for idx_1, word_id in enumerate(word_ids):
+                one_hot[idx_0, idx_1, word_id] = 1
+
+    return one_hot
+
 if __name__ == '__main__':
     text = 'You say goodbye and I say hello.'
     corpus, word_to_id, id_to_word = preprocess(text)
@@ -68,7 +86,13 @@ if __name__ == '__main__':
     print(id_to_word)
     print(corpus[1:-1])  # [1 2 3 4 1 5]
     contexts, target = create_contexts_target(corpus)
-    print(contexts)
-    print(target)
+    print(contexts) #[[0 2][1 3][2 4][3 1][4 5][1 6]]
+    print(target) #[1 2 3 4 1 5]
+    vocab_size = len(word_to_id)
+    target = convert_one_hot(target, vocab_size)
+    contexts = convert_one_hot(contexts, vocab_size)
+    print('convert target', target)
+    print('convert contexts', contexts)
+    print('aaa', contexts[:, 1])
 
 
