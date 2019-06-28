@@ -1,3 +1,6 @@
+# coding: utf-8
+
+
 import numpy as np
 
 # 'You say goodbye and I say hello.'
@@ -94,5 +97,12 @@ if __name__ == '__main__':
     print('convert target', target)
     print('convert contexts', contexts)
     print('aaa', contexts[:, 1])
+
+    # aaa [[0 0 1 0 0 0 0]
+#  [0 0 0 1 0 0 0]
+#  [0 0 0 0 1 0 0]
+#  [0 1 0 0 0 0 0]
+#  [0 0 0 0 0 1 0]
+#  [0 0 0 0 0 0 1]]
 
 

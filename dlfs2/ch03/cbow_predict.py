@@ -22,5 +22,8 @@ if __name__ == '__main__':
     # print(contexts[:, 1]) [2 3 4 1 5 6]
     print(contexts.shape)
     print(np.dot(contexts[:,1], 0.01 * np.random.randn(len(word_to_id), 5).astype('f')))
-    # model = SimpleCBOW(vocab_size, hidden_size)
-    # model.forward(contexts, target)
+    model = SimpleCBOW(vocab_size, hidden_size)
+    model.forward(contexts, target)
+
+    model.forward(contexts, target)
+
