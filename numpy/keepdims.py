@@ -8,7 +8,7 @@ x = np.array([
 max_x = np.max(x, axis=1)
 print('keepdims=false:',max_x) #[1002    4]
 print('keepdims=false, result:', x-max_x) # [[  -1  998] [-999    0]]
-
+print('x ===>', x.size)
 
 keepdims_max_x = np.max(x, axis=1, keepdims=True)
 print('keepdims=true:', keepdims_max_x) # [[1002] [   4]]
