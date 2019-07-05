@@ -117,6 +117,7 @@ input_shape, output_shape = train_data.output_shapes
 input_dimension = input_shape.dims[1]  # [0] is the batch size
 
 print(input_dimension)
+# print('traindata[0]', train_data[0])
 model = get_model(input_dimension)
 model.compile(
     loss='binary_crossentropy',
