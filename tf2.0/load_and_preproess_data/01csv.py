@@ -85,6 +85,7 @@ def preprocess(features, labels):
             features[feature], MEANS[feature])
 
     # features = tf.concat([features[column] for column in FEATURE_COLUMNS])
+    print('preprocess:\n', [features[column] for column in FEATURE_COLUMNS])
     features = tf.concat([features[column] for column in FEATURE_COLUMNS], 1)
     print("features", features)
     return features, labels

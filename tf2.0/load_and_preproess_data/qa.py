@@ -22,3 +22,10 @@ r = tf.equal(c, t)
 print('tf.equal(c, t):', r)
 print('tf.cast(r)', tf.cast(r, tf.int32))
 # print('tf.reshape(t, []):\n',  tf.reshape(t, []))  error 
+
+# print('tf.concat():', tf.concat([[1, 2, 3], [4, 5, 6]], 1))
+
+
+t1 = [[4], [5], [6]]
+t2 = [[1],[2],[3]]
+print('tf.concat()', tf.concat( [t1,t2], 1))
