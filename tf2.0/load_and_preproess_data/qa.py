@@ -27,5 +27,5 @@ print('tf.cast(r)', tf.cast(r, tf.int32))
 
 
 t1 = [[4,5], [5,4], [6,1]]
-t2 = [[1],[2],[3]]
-print('tf.concat()', tf.concat( [t1,t2], 1))
+t2 = [[1,4],[2,4],[3,4]]
+print('tf.concat()', tf.concat( [t1,t2], 2))
