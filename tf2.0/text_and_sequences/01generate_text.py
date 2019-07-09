@@ -45,7 +45,7 @@ def generate_text(model, start_string):
   # Evaluation step (generating text using the learned model)
 
   # Number of characters to generate
-  num_generate = 1000
+  num_generate = 1
 
   # Converting our start string to numbers (vectorizing)
   input_eval = [char2idx[s] for s in start_string]
@@ -63,13 +63,16 @@ def generate_text(model, start_string):
   model.reset_states()
   for i in range(num_generate):
       predictions = model(input_eval)
+      print(type(predictions), predictions)
       # remove the batch dimension
       predictions = tf.squeeze(predictions, 0)
 
+      print('squeeze',predictions)
       # using a categorical distribution to predict the word returned by the model
       predictions = predictions / temperature
+      print('temperature',predictions)
       predicted_id = tf.random.categorical(predictions, num_samples=1)[-1,0].numpy()
-
+      print('categorical',predicted_id)    
       # We pass the predicted word as the next input to the model
       # along with the previous hidden state
       input_eval = tf.expand_dims([predicted_id], 0)
