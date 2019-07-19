@@ -1,11 +1,11 @@
 import numpy as np 
-
+from PIL import Image
 x = np.array([
     [1001, 1002],
     [3, 4]
 ])
 
-max_x = np.max(x, axis=1)
+max_x = np.max(x, axis=0)
 print('keepdims=false:',max_x) #[1002    4]
 print('keepdims=false, result:', x-max_x) # [[  -1  998] [-999    0]]
 print('x ===>', x.size)
