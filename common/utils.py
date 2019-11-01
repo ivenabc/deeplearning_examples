@@ -35,16 +35,16 @@ def conv_output_size(input_size, filter_size, stride=1, pad=0):
 
 def im2col(input_data, filter_h, filter_w, stride=1, pad=0):
     """
-    Parameters
+    parameters
     ----------
-    input_data : (データ数, チャンネル, 高さ, 幅)の4次元配列からなる入力データ
-    filter_h : フィルターの高さ
-    filter_w : フィルターの幅
-    stride : ストライド
-    pad : パディング
-    Returns
+    由(数据数目，通道，高度，宽度)的4维排列构成的输入数据
+    filter_h:过滤器的高度
+    filter_w:过滤器的宽度
+    stride:强袭
+    pad:填充
+    returns
     -------
-    col : 2次元配列
+    col:二维阵列
     """
     N, C, H, W = input_data.shape
     out_h = (H + 2*pad - filter_h)//stride + 1
