@@ -78,6 +78,12 @@ class TwoLayerNet:
 
 if __name__ == '__main__':
     (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True, one_hot_label=True)
+    print('x_train:', x_train.shape) # (60000, 784)
+    print('t_train:', t_train.shape) # (60000, 10)
+    print('x_test:', x_test.shape) # (10000, 784)
+    print('t_test:', t_test.shape) # (10000, 10)
+    
+    # os._exit(0) 
     network = TwoLayerNet(input_size=784, hidden_size=50, output_size=10)
 
     iters_num = 10000
@@ -90,6 +96,7 @@ if __name__ == '__main__':
     test_acc_list = []
 
     iter_per_epoch = max(train_size / batch_size, 1)
+    print(iters_num, iter_per_epoch)
     for i in range(iters_num):
         batch_mask = np.random.choice(train_size, batch_size)
         x_batch = x_train[batch_mask]

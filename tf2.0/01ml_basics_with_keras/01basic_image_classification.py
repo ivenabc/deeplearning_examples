@@ -26,11 +26,36 @@ def load_mnist(path, kind='train'):
 
     with gzip.open(images_path, 'rb') as imgpath:
         images = np.frombuffer(imgpath.read(), dtype=np.uint8,
-                               offset=16).reshape(len(labels), 784)
+                               offset=16).reshape(len(labels), 28,28)
 
     return images, labels
 
-train_images, train_labels = load_mnist('nnn', kind='train')
-test_images, test_labels = load_mnist('nnn', kind='t10k')
+train_images, train_labels = load_mnist('fashion', kind='train')
+test_images, test_labels = load_mnist('fashion', kind='t10k')
 
-print(type(X_train),X_train.shape) # <class 'numpy.ndarray'> , shape: (60000, 784)
+print(type(train_images),train_images.shape) # <class 'numpy.ndarray'> , shape: <class 'numpy.ndarray'> (60000, 28, 28)
+print(type(train_labels),train_labels.shape, train_labels[0]) # <class 'numpy.ndarray'> (60000,) 9
+
+# plt.figure()
+# plt.imshow(train_images[0])
+# plt.colorbar()
+# plt.grid(False)
+# plt.show()
+
+model = tf.keras.Sequential([
+    tf.keras.layers.Flatten(input_shape=(28, 28)),
+    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(10, activation='softmax')
+])
+
+model.compile(optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy'])
+
+model.fit(train_images, train_labels, epochs=10)
+
+test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
+
+print('\nTest accuracy:', test_acc)
+
+predictions = model.predict(test_images)

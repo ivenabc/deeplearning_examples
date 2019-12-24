@@ -4,7 +4,6 @@ data/
 plt.png
 __pycache__
 
-*.gz
 *.gzs
 mnist.pkl
 *.bmp
