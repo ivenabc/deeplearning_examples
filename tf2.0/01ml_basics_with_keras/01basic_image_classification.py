@@ -1,3 +1,5 @@
+#coding:utf-8
+import os 
 import tensorflow as tf
 from tensorflow import keras
 
@@ -52,10 +54,29 @@ model.compile(optimizer='adam',
     loss='sparse_categorical_crossentropy',
     metrics=['accuracy'])
 
-model.fit(train_images, train_labels, epochs=10)
+checkpoint_path = 'training_models/cp-{epoch:04d}.ckpt'
+# checkpoint_dir = os.path.dirname(checkpoint_path)
+cp_callback = tf.keras.callbacks.ModelCheckpoint(
+    filepath=checkpoint_path, 
+    verbose=1, 
+    save_weights_only=True,
+    period=1)
 
-test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
+checkpoint_dir = os.path.dirname(checkpoint_path)
+latest = tf.train.latest_checkpoint(checkpoint_dir)
+if latest:
+    model.load_weights(latest)
+# model.save_weights(checkpoint_path.format(epoch=0))
 
-print('\nTest accuracy:', test_acc)
+model.fit(train_images, 
+    train_labels, 
+    epochs=10,
+    callbacks=[cp_callback],
+    validation_data=(test_images,test_labels),
+    verbose=1)
 
-predictions = model.predict(test_images)
+# test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
+
+# print('\nTest accuracy:', test_acc)
+
+# predictions = model.predict(test_images)

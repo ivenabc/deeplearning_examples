@@ -9,3 +9,4 @@ mnist.pkl
 *.bmp
 *.png
 *.csv
+training_models
