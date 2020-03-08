@@ -2,11 +2,26 @@
 import os 
 import numpy as np
 import tensorflow as tf
-import tensorflow_datasets as tfds
 from tensorflow import keras
+from model import create_model
 
 print("Version: ", tf.__version__)
-print("GPU is", "available" if tf.config.experimental.list_physical_devices("GPU") else "NOT AVAILABLE")
+# print("GPU is", "available" if tf.config.experimental.list_physical_devices("GPU") else "NOT AVAILABLE")
+
+vocab_size = 10000
+
+model = create_model(vocab_size)
+checkpoint_path = 'training_models/cp-{epoch:04d}.ckpt'
+cp_callback = tf.keras.callbacks.ModelCheckpoint(
+    filepath=checkpoint_path, 
+    verbose=1, 
+    save_weights_only=True,
+    period=1)
+
+checkpoint_dir = os.path.dirname(checkpoint_path)
+latest = tf.train.latest_checkpoint(checkpoint_dir)
+if latest:
+    model.load_weights(latest)
 
 
 imdb = tf.keras.datasets.imdb
@@ -41,18 +56,9 @@ test_data = keras.preprocessing.sequence.pad_sequences(test_data,
                                                        padding='post',
                                                        maxlen=256)
 
+print(train_data.shape, train_labels.shape) #(25000, 256) (25000,)
 
-vocab_size = 10000
-model = keras.Sequential()
-model.add(keras.layers.Embedding(vocab_size, 16))
-model.add(keras.layers.GlobalAveragePooling1D())
-model.add(keras.layers.Dense(16, activation='relu'))
-model.add(keras.layers.Dense(1, activation='sigmoid'))
 
-model.summary()
-model.compile(optimizer='adam',
-              loss='binary_crossentropy',
-              metrics=['accuracy'])
 
 x_val = train_data[:10000]
 partial_x_train = train_data[10000:]
@@ -63,6 +69,7 @@ partial_y_train = train_labels[10000:]
 history = model.fit(partial_x_train,
                     partial_y_train,
                     epochs=40,
+                    callbacks=[cp_callback],
                     batch_size=512,
                     validation_data=(x_val, y_val),
                     verbose=1)
